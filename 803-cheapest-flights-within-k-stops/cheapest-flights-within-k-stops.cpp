@@ -22,8 +22,7 @@ public:
     int solve(int src, int dst, int k, vector<vector<int>>& flights, vector<vector<int>>& dp) {
         if (src == dst) return 0; 
         if (k < 0) return INT_MAX;
-        if (dp[src][k] != -1) return dp[src][k]; // Corrected the variable name
-
+        if (dp[src][k] != -1) return dp[src][k];
         vector<int> destinations = check(flights, src);
         int minCost = INT_MAX;
 
