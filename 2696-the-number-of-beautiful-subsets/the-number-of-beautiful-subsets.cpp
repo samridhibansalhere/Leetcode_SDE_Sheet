@@ -26,6 +26,6 @@ public:
         int c = 0;
         vector<int> a;
         solve(0, nums, n, a, k, c);
-        return c-1;
+        return c-1;//exclude empty case
     }
 };
