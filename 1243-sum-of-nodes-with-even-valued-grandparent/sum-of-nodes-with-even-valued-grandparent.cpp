@@ -25,8 +25,7 @@ public:
         if (root == nullptr) return;
         inorder(root->left, s);
         if (root->val % 2 == 0) {
-            check(root->left, 1, s); 
-            check(root->right, 1, s);
+            check(root, 0, s); 
         }
         inorder(root->right, s);
     }
