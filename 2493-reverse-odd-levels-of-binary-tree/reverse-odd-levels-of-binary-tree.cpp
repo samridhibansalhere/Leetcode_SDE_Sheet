@@ -34,12 +34,9 @@ public:
     TreeNode* reverseOddLevels(TreeNode* root) {
         vector<vector<int>> a;
         inorder1(root, 1, a);
-
-        // Reverse the values at odd levels
         for (int i = 1; i < a.size(); i += 2) {
             reverse(a[i].begin(), a[i].end());
         }
-
         inorder2(root, 1, a);
         return root;
     }
