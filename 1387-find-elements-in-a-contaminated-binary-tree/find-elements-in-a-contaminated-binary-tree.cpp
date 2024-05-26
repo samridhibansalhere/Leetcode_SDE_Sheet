@@ -13,11 +13,11 @@ class FindElements {
 public:
     TreeNode* node;
     
-    void correct(TreeNode* root, int parent, int c) {
+    void correct(TreeNode* root, int parent) {
         if (root == nullptr) return;
-        correct(root->left, 2 * parent + 1, 1);
+        correct(root->left, 2 * parent + 1);
         root->val =parent;;
-        correct(root->right, 2 * parent + 2, 2);
+        correct(root->right, 2 * parent + 2);
         node = root;
     }
     
@@ -29,7 +29,7 @@ public:
     }
     
     FindElements(TreeNode* root) {
-        correct(root, 0, 0);
+        correct(root, 0);
     }
     
     bool find(int target) {
