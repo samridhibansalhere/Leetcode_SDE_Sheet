@@ -5,21 +5,21 @@
 class Solution {
 public:
     bool isValidSerialization(std::string preorder) {
-        std::stack<std::string> s;
-        std::istringstream iss(preorder);
-        std::string token;
+        stack<string> st;
+        istringstream s(preorder);
+        string token;
 
-        while (getline(iss, token, ',')) {
-            while (token == "#" && !s.empty() && s.top() == "#") {
-                s.pop();
-                if (s.empty()) {
-                    return false;
-                }
-                s.pop();
+        while (getline(s, token, ','))
+        {
+            while (token == "#" && !st.empty() && st.top() == "#")
+            {
+                st.pop();
+                if (st.empty()) return false;
+                st.pop();
             }
-            s.push(token);
+            st.push(token);
         }
 
-        return s.size() == 1 && s.top() == "#";
+        return st.size() == 1 && st.top() == "#";
     }
 };
