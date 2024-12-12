@@ -1,46 +1,36 @@
-#include <queue>
-#include <vector>
-
 class Solution {
 public:
-    int orangesRotting(std::vector<std::vector<int>>& grid) {
-        int n = grid.size();
-        int m = grid[0].size();
-        std::queue<std::pair<int, int>> q;
-        int freshOranges = 0;
-        int time = 0;
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (grid[i][j] == 2) {
-                    q.push({i, j});
-                } else if (grid[i][j] == 1) {
-                    freshOranges++;
-                }
-            }
+    int orangesRotting(vector<vector<int>>& grid) {
+      int n=grid.size();
+      int m=grid[0].size();
+      int c=0;
+      queue<pair<int,int>> q;
+      
+      vector<vector<int>> visited(n,vector<int>(m,0)); 
+      for(int i=0;i<n;i++)
+      {
+        for(int j=0;j<m;j++){
+            if(grid[i][j]==2){ q.push(make_pair(i,j)); visited[i][j]=1;}
+            else if(grid[i][j]==1) c++;
         }
-
-        int directions[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        while (!q.empty() && freshOranges > 0) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                int x = q.front().first;
-                int y = q.front().second;
-                q.pop();
-
-                for (auto& dir : directions) {
-                    int nx = x + dir[0];
-                    int ny = y + dir[1];
-                    if (nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] == 1) {
-                        grid[nx][ny] = 2;
-                        freshOranges--;
-                        q.push({nx, ny});
-                    }
-                }
-            }
-            time++;
+      } 
+      int t=0;
+      while(!q.empty() && c>0)
+      {
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            pair<int,int> p=q.front();
+            q.pop();
+            int x=p.first;
+            int y=p.second;
+            if(x-1>=0 && grid[x-1][y]==1 && visited[x-1][y]==0){visited[x-1][y]=1; grid[x-1][y]=2; q.push(make_pair(x-1,y)); c--;}
+            if(x+1<n && grid[x+1][y]==1 && visited[x+1][y]==0){visited[x+1][y]=1; grid[x+1][y]=2; q.push(make_pair(x+1,y)); c--;}
+            if(y-1>=0 && grid[x][y-1]==1 && visited[x][y-1]==0){visited[x][y-1]=1; grid[x][y-1]=2; q.push(make_pair(x,y-1)); c--;}
+            if(y+1<m && grid[x][y+1]==1 && visited[x][y+1]==0){visited[x][y+1]=1; grid[x][y+1]=2; q.push(make_pair(x,y+1)); c--;}
         }
-
-        return freshOranges == 0 ? time : -1;
+        t++;
+      }
+      if(c==0) return t;
+      else return -1;
     }
 };
