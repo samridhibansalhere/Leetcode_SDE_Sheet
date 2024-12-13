@@ -12,17 +12,12 @@ public:
         }
         long long score = 0;
         for (auto& [value, indices] : m) {
-            std::vector<std::pair<int, bool>> toReinsert; // Temporary storage for modified pairs
+            std::vector<std::pair<int, bool>> toReinsert; 
             for (auto it = indices.begin(); it != indices.end(); ++it) {
                 auto [index, processed] = *it;
                 if (!processed) {
-                    // Add value to the score
                     score += value;
-
-                    // Mark current index as processed
                     toReinsert.push_back({index, true});
-
-                    // Mark neighbors as processed
                     if (index > 0) {
                         int leftValue = nums[index - 1];
                         auto& leftSet = m[leftValue];
@@ -43,7 +38,6 @@ public:
                     }
                 }
             }
-            // Reinsert modified pairs into the set
             for (const auto& pair : toReinsert) {
                 indices.insert(pair);
             }
