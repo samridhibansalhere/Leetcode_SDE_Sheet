@@ -1,32 +1,50 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+#include <stack>
+
+class BSTIterator {
+private:
+    std::stack<TreeNode*> stk;
+    bool reverse; 
+
+    void pushAll(TreeNode* node) {
+        while (node != nullptr) {
+            stk.push(node);
+            node = reverse ? node->right : node->left;
+        }
+    }
+
+public:
+    BSTIterator(TreeNode* root, bool isReverse) : reverse(isReverse) {
+        pushAll(root);
+    }
+
+    int next() {
+        TreeNode* node = stk.top();
+        stk.pop();
+        if (!reverse) {
+            pushAll(node->right);
+        } else {
+            pushAll(node->left);
+        }
+        return node->val;
+    }
+
+    bool hasNext() {
+        return !stk.empty();
+    }
+};
+
 class Solution {
 public:
- void inorder(TreeNode* root, vector<int>& a) {
-        if (root == nullptr) return;
-        inorder(root->left, a);
-        a.push_back(root->val);
-        inorder(root->right, a); 
- }
-
     bool findTarget(TreeNode* root, int k) {
-        vector<int> ans;
-        inorder(root,ans);
-        int i=0,j=ans.size()-1;
+        BSTIterator l(root,false);
+        BSTIterator r(root,true);
+        int i=l.next();
+        int j=r.next();
         while(i<j)
         {
-            if(k==ans[i]+ans[j]) return true;
-            else if(ans[i]+ans[j]>k) j--;
-            else i++;
+            if(i+j==k) return true;
+            if(i+j<k) i=l.next();
+            else j=r.next();
         }
         return false;
     }
