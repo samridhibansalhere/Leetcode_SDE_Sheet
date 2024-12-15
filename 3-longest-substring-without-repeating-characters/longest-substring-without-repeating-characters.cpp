@@ -1,32 +1,17 @@
 class Solution {
 public:
-bool check(string s,char a)
-{
-    for(auto i:s)
-    {
-        if(i==a) return false;
-    }
-    return true;
-}
     int lengthOfLongestSubstring(string s) {
-int n=s.size();
-if(n==0) return 0;
-if(n==1) return 1;
-int len=0;
-int ans=0;
-string t="";
-for(int i=0;i<n;i++)
-{
-    if(check(t,s[i])) t+=s[i];
-    else 
-    {
-        int pos=t.find(s[i]);
-        t=t.substr(pos+1)+s[i];
-    }
-    int p=t.size();
-    len=max(p,len);
-    ans=max(ans,len);
-}
-return ans;
+        vector<int> hash(256, -1); // Stores the last index of each character
+        int l = 0, maxlen = 0;
+
+        for (int r = 0; r < s.size(); r++) {
+            if (hash[s[r]] >= l) {
+                l = hash[s[r]] + 1; // Update the left pointer to avoid duplicates
+            }
+            hash[s[r]] = r; // Update the last seen index of the character
+            maxlen = max(maxlen, r - l + 1); // Calculate the current max length
+        }
+
+        return maxlen;
     }
 };
