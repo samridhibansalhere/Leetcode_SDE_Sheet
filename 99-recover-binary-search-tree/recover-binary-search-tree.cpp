@@ -10,41 +10,31 @@
  * };
  */
 class Solution {
+    TreeNode* prev;
+    TreeNode* first;
+    TreeNode* middle;
+    TreeNode* last;
 public:
-    void inorder1(TreeNode* root, vector<int>& a) {
-        if (root == nullptr) return;
-        inorder1(root->left, a);
-        a.push_back(root->val);
-        inorder1(root->right, a); 
-    }
-
-    void inorder2(TreeNode* root, int x, int y, int m, int n, int& c) {
-        if (root == nullptr) return;
-        inorder2(root->left, x, y, m, n, c);
-        if (root->val == x && c == m) root->val = y;
-        else if (root->val == y && c == n) root->val = x;
-        c++;
-        inorder2(root->right, x, y, m, n, c); 
-    }
-
-    void recoverTree(TreeNode* root) {
-        vector<int> a;
-        inorder1(root, a);
-        int x = 0, y = 0, m = 0, n = 0;
-        for (int i = 1; i < a.size(); ++i) {
-            if (a[i] < a[i - 1]) {
-                y = a[i];
-                if (x == 0) {
-                    x = a[i - 1];
-                    m = i - 1;
-                    n = i;
-                } else {
-                    n = i;
-                    break;
-                }
-            }
+void inorder(TreeNode* root)
+{
+    if(root==NULL) return;
+    inorder(root->left);
+    if(prev!=NULL && root->val<prev->val)
+    {
+        if(first==NULL){
+            first=prev;
+            middle=root;
         }
-        int c = 0;
-        inorder2(root, x, y, m, n, c);
+        else last=root;
+    }
+    prev=root;
+    inorder(root->right);
+}
+    void recoverTree(TreeNode* root) {
+        first=NULL,middle=NULL,last=NULL;
+        prev=new TreeNode(INT_MIN);
+        inorder(root);
+        if(first and last) swap(first->val,last->val);
+        else swap(first->val,middle->val);
     }
 };
