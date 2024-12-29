@@ -5,7 +5,7 @@ public:
         vector<pair<int, int>> directions = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
         
         // Min-heap to store {effort, row, col}
-        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<>> pq;
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
         vector<vector<int>> dist(n, vector<int>(m, 1e9));
 
         dist[0][0] = 0;
