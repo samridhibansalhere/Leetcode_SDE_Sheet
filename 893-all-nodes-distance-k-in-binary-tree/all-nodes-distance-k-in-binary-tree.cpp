@@ -9,7 +9,7 @@
  */
 class Solution {
 public:
-void findparent(TreeNode* root,TreeNode* target,unordered_map<TreeNode*,TreeNode*> &parent){
+void findparent(TreeNode* root,unordered_map<TreeNode*,TreeNode*> &parent){
     queue<TreeNode*> q;
     q.push(root);
     while(!q.empty()){
@@ -29,7 +29,7 @@ void findparent(TreeNode* root,TreeNode* target,unordered_map<TreeNode*,TreeNode
         unordered_map<TreeNode*,TreeNode*> parent;
         unordered_map<TreeNode*,bool> visited;
         queue<TreeNode*> q;
-        findparent(root,target,parent);
+        findparent(root,parent);
         q.push(target);
         visited[target]=true;
         int current=0;
