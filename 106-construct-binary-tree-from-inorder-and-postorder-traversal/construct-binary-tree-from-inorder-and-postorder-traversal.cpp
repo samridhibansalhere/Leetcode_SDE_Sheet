@@ -26,7 +26,6 @@ TreeNode* build(vector<int>& postorder,int poststart,int postend, vector<int>& i
         for(int i=0;i<inorder.size();i++){
             mp[inorder[i]]=i;
         }
-        TreeNode* root=build(postorder,0,postorder.size()-1,inorder,0,inorder.size()-1,mp);
-        return root;
+        return build(postorder,0,postorder.size()-1,inorder,0,inorder.size()-1,mp);
     }
 };
