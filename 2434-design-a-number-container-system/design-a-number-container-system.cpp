@@ -11,11 +11,9 @@ public:
             int oldNumber = indexToNumber[index];
             numberToIndices[oldNumber].erase(index);
             if (numberToIndices[oldNumber].empty()) {
-                numberToIndices.erase(oldNumber); // Clean up empty sets
+                numberToIndices.erase(oldNumber); 
             }
         }
-
-        // Update the index to the new number
         indexToNumber[index] = number;
         numberToIndices[number].insert(index);
     }
