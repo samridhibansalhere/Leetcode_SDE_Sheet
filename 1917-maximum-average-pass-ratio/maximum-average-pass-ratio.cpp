@@ -1,46 +1,31 @@
-#include <vector>
-#include <queue>
-using namespace std;
-
 class Solution {
 public:
+double gain(int pass,int total)
+{
+    return (double)(pass+1)/(total+1)-(double)pass/total;
+}
     double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
-        // Define a max-heap with custom comparator for the potential gain
-        auto gain = [](int pass, int total) {
-            return (double)(pass + 1) / (total + 1) - (double)pass / total;
-        };
-
-        priority_queue<pair<double, pair<int, int>>> maxHeap;
-
-        // Push all classes into the heap with their initial potential gains
-        for (auto& c : classes) {
-            maxHeap.push({gain(c[0], c[1]), {c[0], c[1]}});
+        int n=classes.size();
+        priority_queue<pair<double,pair<int,int>>> pq;
+        for(auto c:classes)
+        {
+            int pass=c[0];
+            int total=c[1];
+            pq.push({gain(pass,total),{c[0],c[1]}});
         }
-
-        // Distribute the extra students
-        while (extraStudents--) {
-            auto [currentGain, classData] = maxHeap.top();
-            maxHeap.pop();
-
-            int pass = classData.first;
-            int total = classData.second;
-
-            // Add one extra student
-            pass++;
-            total++;
-
-            // Push the updated class back into the heap
-            maxHeap.push({gain(pass, total), {pass, total}});
+        while(extraStudents--){
+            auto [a,b]=pq.top();
+            pq.pop();
+            int p=b.first;
+            int t=b.second;
+            pq.push({gain(p+1,t+1),{p+1,t+1}});
         }
-
-        // Calculate the final average pass ratio
-        double totalAverage = 0.0;
-        while (!maxHeap.empty()) {
-            auto [_, classData] = maxHeap.top();
-            maxHeap.pop();
-            totalAverage += (double)classData.first / classData.second;
+        double sum=0;
+        while(!pq.empty()){
+            auto [a,b]=pq.top();
+            sum+=(double)b.first/b.second;
+            pq.pop();
         }
-
-        return totalAverage / classes.size();
+        return (double)sum/n;
     }
 };
