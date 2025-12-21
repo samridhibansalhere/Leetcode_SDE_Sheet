@@ -12,8 +12,21 @@ int helper(int index,int amount,vector<int>& coins,vector<vector<int>>& dp)
 }
     int coinChange(vector<int>& coins, int amount) {
        int n=coins.size();
-       vector<vector<int>> dp(n,vector<int>(amount+1,-1));
+       vector<int> prev(amount+1,1e9),curr(amount+1,1e9);
        sort(coins.begin(),coins.end());
-    return (helper(n-1,amount,coins,dp)<1e9)?helper(n-1,amount,coins,dp):-1;
+       if(amount==0) return 0;
+       for(int i=0;i<=amount;i++)
+       if(i%coins[0]==0) prev[i]=curr[i]=i/coins[0];
+       for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<=amount;j++){
+                int nottake=prev[j];
+                int take=1e9;
+                if(j>=coins[i]) take=1+curr[j-coins[i]];
+                curr[j]=min(nottake,take);
+                }
+            prev=curr;
+       }
+       return (prev[amount]<1e9)? prev[amount]:-1;
     }
 };
