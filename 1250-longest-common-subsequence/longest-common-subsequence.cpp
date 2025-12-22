@@ -7,18 +7,37 @@ int helper(int index1,int index2,string text1,string text2, vector<vector<int>>&
     else return dp[index1][index2]=max(helper(index1-1,index2,text1,text2,dp),helper(index1,index2-1,text1,text2,dp));
 }
     int longestCommonSubsequence(string text1, string text2) {
-        vector<int> curr(text2.size()+1,0);
-        vector<int> prev(text2.size()+1,0);
-        for(int i=0;i<=text1.size();i++) prev[0]=0;
-        for(int j=0;j<=text2.size();j++) prev[j]=0;
-        for(int i=1;i<=text1.size();i++)
-        {
-            for(int j=1;j<=text2.size();j++){
-                if(text1[i-1]==text2[j-1]) curr[j]=1+prev[j-1];
-                else curr[j]=max(prev[j],curr[j-1]);
-            }
-            prev=curr;
+    int n=text1.size();
+    int m=text2.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (text1[i - 1] == text2[j - 1])
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+            else
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
         }
-        return prev[text2.size()];
+    }
+
+    int len = dp[n][m];
+    string lcs(len, ' ');
+
+    int i = n, j = m, index = len - 1;
+    while (i > 0 && j > 0) {
+        if (text1[i - 1] == text2[j - 1]) {
+            lcs[index--] = text1[i - 1];
+            i--;
+            j--;
+        }
+        else if (dp[i - 1][j] > dp[i][j - 1]) {
+            i--;
+        }
+        else {
+            j--;
+        }
+    }
+    cout<<lcs;
+    return dp[n][m];
     }
 };
