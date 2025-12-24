@@ -10,19 +10,19 @@ public:
 }
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<vector<int>> dp(n+1,vector<int>(2,0));
-        dp[n][0]=0;
-        dp[n][1]=0;
+        vector<int> prev(2,0);
+        vector<int> curr(2,0);
         for(int index=n-1;index>=0;index--)
         {
             for(int buy=0;buy<2;buy++)
             {
                 long long profit=0;
-                if(buy) profit=max(-prices[index]+helper(index+1,0,n,prices,dp),helper(index+1,1,n,prices,dp));
-                else profit=max(prices[index]+helper(index+1,1,n,prices,dp),helper(index+1,0,n,prices,dp));
-                dp[index][buy]=profit;
+                if(buy) profit=max(-prices[index]+curr[0],curr[1]);
+                else profit=max(prices[index]+curr[1],curr[0]);
+                curr[buy]=profit;
             }
+            prev=curr;
         }
-        return dp[0][1];
+        return prev[1];
     }
 };
