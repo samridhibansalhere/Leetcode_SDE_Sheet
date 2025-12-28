@@ -13,6 +13,6 @@ public:
             ahead2=ahead;
             ahead=curr;
         }
-        return ahead[1];
+        return curr[1];
         }
 };
