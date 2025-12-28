@@ -10,12 +10,9 @@ public:
         {
             for(int buy=0;buy<=1;buy++)
             {
-                for(int cap=1;cap<=2;cap++)
-                {
-                    if(buy) profit=max(-prices[index]+ahead[0],ahead[1]);
-                    else profit=max(prices[index]+ahead2[1],ahead[0]);
-                    curr[buy]=profit;
-                }
+                if(buy) profit=max(-prices[index]+ahead[0],ahead[1]);
+                else profit=max(prices[index]+ahead2[1],ahead[0]);
+                curr[buy]=profit;
             }
             ahead2=ahead;
             ahead=curr;
