@@ -9,15 +9,16 @@ int helper(int index,int pindex,int n,vector<int>& nums,vector<vector<int>>& dp)
 }
     int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
-        vector<vector<long long>> dp(n+1,vector<long long>(n+1,-1));
-        for(int i=0;i<=n;i++) dp[n][i]=0;
+        vector<int> curr(n+1,0);
+        vector<int> ahead(n+1,0);
         for(int index=n-1;index>=0;index--)
         {
-            for(int pindex=index-1;pindex>=-1;pindex--){
-                dp[index][pindex+1] = dp[index+1][pindex+1];
-                if(pindex ==-1 || nums[index]>nums[pindex]) dp[index][pindex+1]=max(dp[index][pindex+1],1+dp[index+1][index+1]);
+            for(int pindex=index;pindex>=0;pindex--){
+                curr[pindex] = ahead[pindex];
+                if(pindex ==0 || nums[index]>nums[pindex-1]) curr[pindex]=max(curr[pindex],1+ahead[index+1]);
             }
+            ahead=curr;
         }    
-        return dp[0][0];
+        return ahead[0];
     }
 };
