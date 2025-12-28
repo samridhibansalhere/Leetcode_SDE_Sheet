@@ -8,12 +8,8 @@ public:
         long long profit=0;
         for(int index=n-1;index>=0;index--)
         {
-            for(int buy=0;buy<=1;buy++)
-            {
-                if(buy) profit=max(-prices[index]+ahead[0],ahead[1]);
-                else profit=max(prices[index]+ahead2[1],ahead[0]);
-                curr[buy]=profit;
-            }
+            curr[1]=max(-prices[index]+ahead[0],ahead[1]);
+            curr[0]=max(prices[index]+ahead2[1],ahead[0]);
             ahead2=ahead;
             ahead=curr;
         }
