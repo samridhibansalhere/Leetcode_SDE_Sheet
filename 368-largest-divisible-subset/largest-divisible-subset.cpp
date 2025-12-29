@@ -30,7 +30,6 @@ public:
             index=parent[index];
         }
         lis.push_back(nums[index]);
-        reverse(lis.begin(),lis.end());
         return lis;
     }
 };
