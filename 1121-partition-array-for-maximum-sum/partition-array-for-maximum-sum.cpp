@@ -13,7 +13,17 @@ int helper(int index,int k,int n,vector<int>& arr,vector<int>&dp){
 }
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
         int n=arr.size();
-        vector<int> dp(n+1,-1);
-        return helper(0,k,n,arr,dp);
+        vector<int> dp(n+1,0);
+        for(int index=n-1;index>=0;index--)
+        {
+            int len=0,maxi=INT_MIN,sum=INT_MIN;
+            for(int j=index;j<min(index+k,n);j++){
+                len++;
+                maxi=max(maxi,arr[j]);
+                sum=max(sum,len*maxi+dp[j+1]);
+            }
+            dp[index]=sum;
+        }
+        return dp[0];
     }
 };
