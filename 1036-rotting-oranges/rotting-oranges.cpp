@@ -3,34 +3,34 @@ public:
     int orangesRotting(vector<vector<int>>& grid) {
       int n=grid.size();
       int m=grid[0].size();
-      vector<vector<int>> visited(n,vector<int>(m,0));
+      int c=0;
       queue<pair<int,int>> q;
-      int count=0;
-      for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++) { 
-        if(grid[i][j]==2) q.push({i,j}); 
-        if(grid[i][j]==1) count++;
+      
+      vector<vector<int>> visited(n,vector<int>(m,0)); 
+      for(int i=0;i<n;i++)
+      {
+        for(int j=0;j<m;j++){
+            if(grid[i][j]==2){ q.push(make_pair(i,j)); visited[i][j]=1;}
+            else if(grid[i][j]==1) c++;
         }
-      }
-      if(count<=0) return 0;
-      int time=-1;
-      while(!q.empty())
+      } 
+      int t=0;
+      while(!q.empty() && c>0)
       {
         int size=q.size();
-        time++;
-        while(size>0){
-        int i=q.front().first;
-        int j=q.front().second;
-        q.pop();
-        visited[i][j]=1;
-        if(i-1>=0 && grid[i-1][j]==1 && visited[i-1][j]==0) {grid[i-1][j]=2; count--; visited[i-1][j]=1; q.push({i-1,j});}
-        if(j-1>=0 && grid[i][j-1]==1 && visited[i][j-1]==0) {grid[i][j-1]=2; count--; visited[i][j-1]=1; q.push({i,j-1});} 
-        if(i+1<n && grid[i+1][j]==1 && visited[i+1][j]==0) {grid[i+1][j]=2; count--; visited[i+1][j]=1;q.push({i+1,j});} 
-        if(j+1<m && grid[i][j+1]==1 && visited[i][j+1]==0) {grid[i][j+1]=2; count--; visited[i][j+1]=1;q.push({i,j+1});} 
-        size--;
+        for(int i=0;i<size;i++){
+            pair<int,int> p=q.front();
+            q.pop();
+            int x=p.first;
+            int y=p.second;
+            if(x-1>=0 && grid[x-1][y]==1 && visited[x-1][y]==0){visited[x-1][y]=1; grid[x-1][y]=2; q.push(make_pair(x-1,y)); c--;}
+            if(x+1<n && grid[x+1][y]==1 && visited[x+1][y]==0){visited[x+1][y]=1; grid[x+1][y]=2; q.push(make_pair(x+1,y)); c--;}
+            if(y-1>=0 && grid[x][y-1]==1 && visited[x][y-1]==0){visited[x][y-1]=1; grid[x][y-1]=2; q.push(make_pair(x,y-1)); c--;}
+            if(y+1<m && grid[x][y+1]==1 && visited[x][y+1]==0){visited[x][y+1]=1; grid[x][y+1]=2; q.push(make_pair(x,y+1)); c--;}
         }
+        t++;
       }
-      if(count>0) return -1;
-      else return time;
+      if(c==0) return t;
+      else return -1;
     }
 };
