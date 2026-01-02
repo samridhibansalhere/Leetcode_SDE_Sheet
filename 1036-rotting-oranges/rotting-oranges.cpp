@@ -22,6 +22,7 @@ public:
         int i=q.front().first;
         int j=q.front().second;
         q.pop();
+        visited[i][j]=1;
         if(i-1>=0 && grid[i-1][j]==1 && visited[i-1][j]==0) {grid[i-1][j]=2; count--; visited[i-1][j]=1; q.push({i-1,j});}
         if(j-1>=0 && grid[i][j-1]==1 && visited[i][j-1]==0) {grid[i][j-1]=2; count--; visited[i][j-1]=1; q.push({i,j-1});} 
         if(i+1<n && grid[i+1][j]==1 && visited[i+1][j]==0) {grid[i+1][j]=2; count--; visited[i+1][j]=1;q.push({i+1,j});} 
