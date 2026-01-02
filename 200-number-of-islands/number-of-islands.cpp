@@ -5,10 +5,10 @@ void dfs(int i,int j,int n,int m,vector<vector<int>> & visited,vector<vector<cha
     if(!visited[i][j] && grid[i][j]=='1')
     {
         visited[i][j]=1;
-        if(i+1<n && grid[i+1][j]=='1')dfs(i+1,j,n,m,visited,grid);
-        if(i-1>=0 && grid[i-1][j]=='1') dfs(i-1,j,n,m,visited,grid);
-        if(j-1>=0 && grid[i][j-1]=='1') dfs(i,j-1,n,m,visited,grid);
-        if(j+1<m && grid[i][j+1]=='1') dfs(i,j+1,n,m,visited,grid);
+        if(i+1<n ) dfs(i+1,j,n,m,visited,grid);
+        if(i-1>=0) dfs(i-1,j,n,m,visited,grid);
+        if(j-1>=0) dfs(i,j-1,n,m,visited,grid);
+        if(j+1<m) dfs(i,j+1,n,m,visited,grid);
     }
 }
     int numIslands(vector<vector<char>>& grid) {
