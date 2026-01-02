@@ -20,8 +20,8 @@ public:
             int k=grid[i+2][j+2];
             vector<int> v = {a,b,c,d,e,f,g,h,k};
             sort(v.begin(), v.end());
-            if(v != ans) continue; 
-            if(a+b+c == 15 && d+e+f == 15 && g+h+k == 15 && a+d+g == 15 && b+e+h == 15 && c+f+k == 15 && a+e+k == 15 && c+e+g == 15) count++;
+            if(v != ans || e!=5) continue; 
+            if(a+b+c == 15 && d+f == 10 && g+h+k == 15 && a+d+g == 15 && b+h == 10 && c+f+k == 15 && a+k == 10 && c+g == 10) count++;
         }
        }
        return count;
