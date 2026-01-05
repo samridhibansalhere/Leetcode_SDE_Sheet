@@ -1,5 +1,14 @@
 class Solution {
 public:
+bool dfs(int node,vector<int>& color,vector<vector<int>>& adj)
+{
+    for(auto neighbour:adj[node])
+    {
+    if(color[neighbour]==-1){color[neighbour]=1-color[node]; if(!dfs(neighbour,color,adj)) return false;}
+    else if (color[neighbour]==color[node])  return false;
+    }
+    return true;
+}
     bool isBipartite(vector<vector<int>>& adj) {
         int n=adj.size();
         vector<int> color(n,-1);
@@ -8,18 +17,7 @@ public:
             if(color[i]==-1)
             {
                 color[i]=0;
-                queue<int> q;
-                q.push(i);
-                while(!q.empty())
-                {
-                    int node=q.front();
-                    q.pop();
-                    for(auto neighbour:adj[node])
-                    {
-                        if(color[neighbour]==-1){color[neighbour]=1-color[node]; q.push(neighbour);}
-                        else if (color[neighbour]==color[node])  return false;
-                    }
-                }
+                if(!dfs(i,color,adj)) return false;
             }
         }
         return true;
