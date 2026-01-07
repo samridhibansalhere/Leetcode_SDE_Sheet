@@ -1,39 +1,32 @@
 class Solution {
 public:
-bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        // Build adjacency list from edge list
-        vector<vector<int>> adj(numCourses);
-        for (const auto& edge : prerequisites) {
-            adj[edge[1]].push_back(edge[0]);
-        }
-
-        // Detect cycles using Kahn's Algorithm
-        vector<int> inDegree(numCourses, 0);
-        for (const auto& edges : adj) {
-            for (int neighbor : edges) {
-                inDegree[neighbor]++;
-            }
-        }
-
-        queue<int> q;
-        for (int i = 0; i < numCourses; i++) {
-            if (inDegree[i] == 0) 
-                q.push(i);
-        }
-
-        int count = 0;
-        while (!q.empty()) {
-            int current = q.front();
-            q.pop();
-            count++;
-            for (int neighbor : adj[current]) {
-                inDegree[neighbor]--;
-                if (inDegree[neighbor] == 0) 
-                    q.push(neighbor);
-            }
-        }
-
-        // If all nodes are processed, return true (no cycles)
-        return count == numCourses;
-    }
+bool canFinish(int n, vector<vector<int>>& edges) {
+    vector<vector<int>> adj(n);
+	vector<int> indegree(n,0);
+	for(int i=0;i<edges.size();i++)
+	{
+		adj[edges[i][1]].push_back(edges[i][0]);
+		indegree[edges[i][0]]++;
+	}
+	queue<int> q;
+	for(int i=0;i<n;i++)
+	{
+		if(indegree[i]==0) q.push(i);
+	}
+	vector<int> ans;
+	while(!q.empty())
+	{
+		int node=q.front();
+		ans.push_back(node+1);
+		q.pop();
+		for(auto neighbour:adj[node])
+		{
+			indegree[neighbour]--;
+			if(indegree[neighbour]==0) q.push(neighbour);
+		}
+	}
+	
+	return ans.size()==n;
+}
 };
+
