@@ -14,6 +14,7 @@ public:
             int j=p.second;
             int d=grid[i][j];
             q.pop();
+            if(i==n-1 && j==m-1) return dist[n-1][m-1];
             if(j+1<m && max(l,abs(grid[i][j+1]-d))<dist[i][j+1]){dist[i][j+1]=max(l,abs(grid[i][j+1]-d)); q.push({dist[i][j+1],{i,j+1}});}
             if(i+1<n && max(l,abs(grid[i+1][j]-d))<dist[i+1][j]) {  dist[i+1][j]=max(l,abs(grid[i+1][j]-d)); q.push({dist[i+1][j],{i+1,j}});}
             if(i-1>=0 && max(l,abs(grid[i-1][j]-d))<dist[i-1][j]){ dist[i-1][j]=max(l,abs(grid[i-1][j]-d)); q.push({dist[i-1][j],{i-1,j}});}
