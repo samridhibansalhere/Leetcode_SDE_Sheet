@@ -8,8 +8,8 @@ public:
             adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
             adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
         }
-        vector<long long> dist(n, LLONG_MAX);
-        vector<long long> ways(n,0);
+        vector<long long> dist(n,LLONG_MAX);
+        vector<int> ways(n,0);
         dist[0]=0;
         ways[0]=1;
         priority_queue<pair<long long,int>,vector<pair<long long,int>>,greater<pair<long long,int>>> q;
@@ -18,10 +18,9 @@ public:
         {
             auto [d,node]=q.top();
             q.pop();
-             if (d > dist[node]) continue;
             for(auto [neighbour,weight]:adj[node])
             {
-                if(dist[neighbour]==d+weight) ways[neighbour]=(ways[neighbour]+ways[node])%MOD;
+                if(dist[neighbour]==d+weight) ways[neighbour]=(ways[neighbour]%MOD+ways[node]%MOD)%MOD;
                 else if(dist[neighbour]>d+weight){dist[neighbour]=d+weight; ways[neighbour]=ways[node]; q.push({d+weight,neighbour});}
             }
         }
