@@ -6,20 +6,6 @@ int ultimateparent(int node, vector<int>& parent)
     else return parent[node] = ultimateparent(parent[node], parent);
 }
 
-void unionbyrank(int u, int v, vector<int>& rank, vector<int>& parent)
-{
-    int node1 = ultimateparent(u, parent);
-    int node2 = ultimateparent(v, parent);
-    if (node1 == node2) return;
-
-    if (rank[node1] > rank[node2]) parent[node2] = node1;
-    else if (rank[node1] < rank[node2]) parent[node1] = node2;
-    else {
-        parent[node1] = node2;
-        rank[node2]++;
-    }
-}
-
 void unionbysize(int u, int v, vector<int>& size, vector<int>& parent)
 {
     int node1 = ultimateparent(u, parent);
