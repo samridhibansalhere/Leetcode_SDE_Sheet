@@ -57,6 +57,6 @@ void unionbysize(int u, int v, vector<int>& size, vector<int>& parent)
                     result=max(result,ans);
             }
         }
-        return max(result,size[ultimateparent(0,parent)]);
+        return max(result,size[parent[0]]);
     }
 };
