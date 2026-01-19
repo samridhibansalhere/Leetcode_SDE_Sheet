@@ -1,62 +1,58 @@
-class DisjointSet {
-private:
-    vector<int> parent, rank;
-
-public:
-    // Constructor to initialize the parent and rank arrays
-    DisjointSet(int size) {
-        parent.resize(size);
-        rank.resize(size, 0);
-        for (int i = 0; i < size; ++i) {
-            parent[i] = i; // Each node is its own parent initially
-        }
-    }
-
-    // Find with path compression
-    int findUltimateParent(int node) {
-        if (parent[node] != node) {
-            parent[node] = findUltimateParent(parent[node]); // Path compression
-        }
-        return parent[node];
-    }
-
-    // Union by rank
-    void unionByRank(int u, int v) {
-        int rootU = findUltimateParent(u);
-        int rootV = findUltimateParent(v);
-        if (rootU != rootV) {
-            if (rank[rootU] > rank[rootV]) {
-                parent[rootV] = rootU;
-            } else if (rank[rootU] < rank[rootV]) {
-                parent[rootU] = rootV;
-            } else {
-                parent[rootV] = rootU;
-                rank[rootU]++;
-            }
-        }
-    }
-};
 class Solution {
 public:
+int ultimateparent(int node, vector<int>& parent)
+{
+    if (parent[node] == node) return parent[node];
+    else return parent[node] = ultimateparent(parent[node], parent);
+}
+
+void unionbyrank(int u, int v, vector<int>& rank, vector<int>& parent)
+{
+    int node1 = ultimateparent(u, parent);
+    int node2 = ultimateparent(v, parent);
+    if (node1 == node2) return;
+
+    if (rank[node1] > rank[node2]) parent[node2] = node1;
+    else if (rank[node1] < rank[node2]) parent[node1] = node2;
+    else {
+        parent[node1] = node2;
+        rank[node2]++;
+    }
+}
+
+void unionbysize(int u, int v, vector<int>& size, vector<int>& parent)
+{
+    int node1 = ultimateparent(u, parent);
+    int node2 = ultimateparent(v, parent);
+    if (node1 == node2) return;
+
+    if (size[node1] > size[node2]) {
+        parent[node2] = node1;
+        size[node1] += size[node2];
+    } else {
+        parent[node1] = node2;
+        size[node2] += size[node1];
+    }
+}
+
     int removeStones(vector<vector<int>>& stones) {
-        int mr=0,mc=0;
-        for(auto it:stones){
-            mr=max(mr,it[0]);
-            mc=max(mc,it[1]);
+       int n=stones.size();
+       vector<int> parent(n);
+       vector<int> size(n,1);
+       for(int i=0;i<n;i++) parent[i]=i;
+       for(int i=0;i<n;i++)
+       {
+        for(int j=i+1;j<n;j++)
+        {
+            int rx=stones[i][0];
+            int cx=stones[i][1];
+            int ry=stones[j][0];
+            int cy=stones[j][1];
+            if(rx==ry || cx==cy) unionbysize(i,j,size,parent);
         }
-        DisjointSet ds(mr+mc+2);
-        unordered_map<int,int> mp; 
-        for(auto it:stones){
-            int r=it[0];
-            int c=it[1]+mr+1;
-            ds.unionByRank(r,c);
-            mp[r]=1;
-            mp[c]=1;
-        }
-        int count=0;
-        for(auto it:mp){
-            if(ds.findUltimateParent(it.first)==it.first) count++;
-        }
-        return stones.size()-count;
+       }
+       int c=0;
+       for(int i=0;i<n;i++) if(parent[i]==i) c++;
+       return n-c;
     }
 };
