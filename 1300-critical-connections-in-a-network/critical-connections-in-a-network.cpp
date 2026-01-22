@@ -1,38 +1,35 @@
 class Solution {
 public:
-    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+void dfs(int node,int parent,int &timer,vector<int>&visited,vector<int>&first,vector<int>&low,vector<vector<int>>&ans,vector<vector<int>>&adj){
+    visited[node]=1;
+    first[node]=low[node]=timer;
+    timer++;
+    for(auto i:adj[node]){
+        if(i==parent) continue;
+        if(!visited[i]){
+            dfs(i,node,timer,visited,first,low,ans,adj);
+            low[node]=min(low[node],low[i]);
+            if(first[node]<low[i]) ans.push_back({node,i});
+        } 
+        else low[node]=min(low[node],low[i]);
+    }
+}
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& edges) {
         vector<vector<int>> adj(n);
-        for (const auto& edge : connections) {
-            adj[edge[0]].push_back(edge[1]);
-            adj[edge[1]].push_back(edge[0]);
+        for(int i=0;i<edges.size();i++)
+        {
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
         }
-
-        vector<int> discovery(n, -1), low(n, -1); // Discovery and low times
-        vector<vector<int>> bridges;
-        int time = 0;
-
-        function<void(int, int)> dfs = [&](int node, int parent) {
-            discovery[node] = low[node] = time++;
-            for (int neighbor : adj[node]) {
-                if (neighbor == parent) continue; // Ignore the edge to the parent
-                if (discovery[neighbor] == -1) { // If the neighbor is unvisited
-                    dfs(neighbor, node);
-                    low[node] = min(low[node], low[neighbor]);
-                    if (low[neighbor] > discovery[node]) { // Bridge condition
-                        bridges.push_back({node, neighbor});
-                    }
-                } else { // Back edge
-                    low[node] = min(low[node], discovery[neighbor]);
-                }
-            }
-        };
-
-        for (int i = 0; i < n; ++i) {
-            if (discovery[i] == -1) {
-                dfs(i, -1);
-            }
+        int timer=1;
+        vector<int>visited(n,0);
+        vector<int> first(n,0);
+        vector<int> low(n,0);
+        vector<vector<int>> ans;
+        for(int i=0;i<n;i++)
+        {
+            if(!visited[i]) dfs(i,-1,timer,visited,first,low,ans,adj);
         }
-
-        return bridges;
+        return ans;
     }
 };
