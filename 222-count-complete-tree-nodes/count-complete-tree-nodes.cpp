@@ -27,7 +27,7 @@ public:
        if(root==nullptr) return 0;
        int left=leftheight(root);
        int right=rightheight(root);
-       if(left == right) return (1<<left)-1; 
+       if(left == right) return pow(2,left)-1; 
        else return 1+countNodes(root->left)+countNodes(root->right);
     }
 };
