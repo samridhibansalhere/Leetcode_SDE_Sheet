@@ -11,62 +11,35 @@
  */
 class Solution {
 public:
-    int find(unordered_map<TreeNode*,TreeNode*> &parent,TreeNode* target){
-        queue<TreeNode*> q;
-        q.push(target);
+    int amountOfTime(TreeNode* root, int start) {
+        unordered_map<TreeNode*,TreeNode*> mp;
         unordered_map<TreeNode*,bool> visited;
-        visited[target]=true;
-        int maxi=0;
-        while(!q.empty()){
-            int size=q.size();
-            int current=0;
-            for(int i=0;i<size;i++){
-                TreeNode* node=q.front();
-                q.pop();
-                if(node->left && !visited[node->left]){
-                    current=1;
-                    q.push(node->left);
-                    visited[node->left]=true;
-                }
-                if(node->right && !visited[node->right]){
-                    current=1;
-                    q.push(node->right);
-                    visited[node->right]=true;
-                }
-                if(parent[node] && !visited[parent[node]]){
-                    current=1;
-                    q.push(parent[node]);
-                    visited[parent[node]]=true;
-                }
-            }
-            if(current) maxi++;
-        }
-        return maxi;
-}
-    TreeNode* findparent(TreeNode* root,unordered_map<TreeNode*,TreeNode*> &parent,int start){
         queue<TreeNode*> q;
         q.push(root);
-        TreeNode* res;
-        while(!q.empty()){
-            TreeNode* node=q.front();
-            if(node->val==start) res=node;
+        TreeNode* target=nullptr;
+        while(!q.empty())
+        {
+            TreeNode* curr=q.front();
             q.pop();
-            if(node->left){
-                q.push(node->left);
-                parent[node->left]=node;
+            if(curr->val==start) target=curr;
+            if(curr->left){mp[curr->left]=curr; q.push(curr->left);}
+            if(curr->right){mp[curr->right]=curr; q.push(curr->right);}
+        }   
+        int level=-1;
+        q.push(target);
+        visited[target]=true;
+        while(!q.empty())
+        {
+            int size=q.size();
+            level++;
+            for(int i=0;i<size;i++){
+            TreeNode* curr=q.front();
+            q.pop();
+            if(curr->left && !visited[curr->left]) {q.push(curr->left); visited[curr->left]=true;} 
+            if(curr->right && !visited[curr->right]) {q.push(curr->right); visited[curr->right]=true;} 
+            if(mp[curr] && !visited[mp[curr]]) {q.push(mp[curr]); visited[mp[curr]]=true;} 
             }
-            if(node->right){
-                q.push(node->right);
-                parent[node->right]=node;
-            }
-        } 
-        return res;
-    }
-    int amountOfTime(TreeNode* root, int start) {
-        unordered_map<TreeNode*,TreeNode*> parent;
-        unordered_map<TreeNode*,bool> visited;
-        TreeNode* target=findparent(root,parent,start);
-        int maxi=find(parent,target);
-        return maxi;    
+        }
+        return level;
     }
 };
