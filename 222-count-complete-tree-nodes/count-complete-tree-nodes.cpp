@@ -11,29 +11,23 @@
  */
 class Solution {
 public:
-int findleft(TreeNode* node){
-    int c=0;
-    while(node)
+    int leftheight(TreeNode* root)
     {
-        c++;
-        node=node->left;
+        int h=0;
+        while(root){root=root->left; h++;}
+        return h;
     }
-    return c;
-}
-int findright(TreeNode* node){
-    int c=0;
-    while(node)
+     int rightheight(TreeNode* root)
     {
-        c++;
-        node=node->right;
+        int h=0;
+        while(root){root=root->right; h++;}
+        return h;
     }
-    return c;
-}
     int countNodes(TreeNode* root) {
-        if(root==NULL) return 0;
-        int left=findleft(root);
-        int right=findright(root);
-        if(left==right) return (1<<left)-1;
-        return 1+countNodes(root->left)+countNodes(root->right);
+       if(root==nullptr) return 0;
+       int left=leftheight(root);
+       int right=rightheight(root);
+       if(left == right) return (1<<left)-1; 
+       else return 1+countNodes(root->left)+countNodes(root->right);
     }
 };
