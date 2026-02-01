@@ -1,34 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-        if (!root) return 0;
-        
-        // Queue to store nodes along with their indices
-        queue<pair<TreeNode*, unsigned long long>> q;
-        q.push({root, 0});  // root node has index 0
-        unsigned long long maxWidth = 0;
-
-        while (!q.empty()) {
-            int size = q.size();
-            unsigned long long minIndex = q.front().second;  // Minimum index at the current level
-            unsigned long long first, last;
-
-            for (int i = 0; i < size; ++i) {
-                unsigned long long currIndex = q.front().second - minIndex;  // Normalize indices to avoid overflow
-                TreeNode* node = q.front().first;
+        if(root==nullptr) return 0;
+        queue<pair<TreeNode*,long long>> q;
+        q.push({root,0});
+        int ans=0;
+        while(!q.empty()){
+            int size=q.size();
+            long long base=q.front().second;
+            long long first,last;
+            for(int i=0;i<size;i++)
+            {
+                auto[node,curr]=q.front();
                 q.pop();
-
-                if (i == 0) first = currIndex;  // First node index at this level
-                if (i == size - 1) last = currIndex;  // Last node index at this level
-
-                if (node->left) q.push({node->left, 2 * currIndex + 1});
-                if (node->right) q.push({node->right, 2 * currIndex + 2});
+                curr=curr-base;
+                if(i==0) first=curr;
+                if(i==size-1) last=curr;
+                if(node->left) q.push({node->left,2*curr+1});
+                if(node->right) q.push({node->right,2*curr+2});
             }
-
-            // Calculate the width for this level
-            maxWidth = max(maxWidth, last - first + 1);
+            if(last-first+1>ans) ans=last-first+1;
         }
-
-        return maxWidth;
+        return ans;
     }
 };
