@@ -1,20 +1,21 @@
 class Solution {
 public:
-    int characterReplacement(string s, int k) {
- vector<int> seen(26,0);
- int l=0,maxlen=0,maxi=0;
- for(int i=0;i<s.size();i++)
- {
-    seen[s[i]-'A']++;
-    maxi=max(maxi,seen[s[i]-'A']);
-    int changes=i-l+1-maxi;
-    if(changes>k)
+    int characterReplacement(string str, int k) {
+    int l=0,r=0,maxi=0,maxlen=0;
+    vector<int> v(26,0);
+    while(r<str.size())
     {
-        seen[s[l]-'A']--;
-        l++;
+        v[str[r]-'A']++;
+        maxi=max(maxi,v[str[r]-'A']);
+        if(r-l+1-maxi>k){
+            v[str[l]-'A']--; 
+            maxi=0;
+            l++;
+            for(auto i=0;i<26;i++) maxi=max(maxi,v[i]);
+        }
+        if(r-l-1-maxi<=k) maxlen=max(maxi,r-l+1);
+        r++;
     }
-    else maxlen=max(maxlen,i-l+1);
- }       
- return maxlen;
+    return maxlen;        
     }
 };
