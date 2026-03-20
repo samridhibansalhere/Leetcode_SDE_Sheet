@@ -9,9 +9,7 @@ public:
         maxi=max(maxi,v[str[r]-'A']);
         if(r-l+1-maxi>k){
             v[str[l]-'A']--; 
-            maxi=0;
             l++;
-            for(auto i=0;i<26;i++) maxi=max(maxi,v[i]);
         }
         if(r-l-1-maxi<=k) maxlen=max(maxi,r-l+1);
         r++;
