@@ -21,18 +21,12 @@ public:
     }
     
     string back(int steps) {
-        while(steps--)
-        {
-            curr=(curr->prev)?curr->prev:curr;
-        }
+        while(steps--) curr=(curr->prev)?curr->prev:curr;
         return curr->val;
     }
     
     string forward(int steps) {
-        while(steps--)
-        {
-            curr=(curr->next)?curr->next:curr;
-        }
+        while(steps--) curr=(curr->next)?curr->next:curr;
         return curr->val;
     }
 };
