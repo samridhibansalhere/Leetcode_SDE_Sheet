@@ -1,36 +1,46 @@
 class Solution {
 public:
-int largestRectangleArea(vector<int>& heights) {
-        int n = heights.size();
+    int largestRectangleArea(vector<int>& heights) {
+        int maxi=0;
         stack<int> st;
-        int maxArea = 0;
-
-        for (int i = 0; i <= n; i++) {
-            int currHeight = (i == n) ? 0 : heights[i];
-
-            while (!st.empty() && currHeight < heights[st.top()]) {
-                int height = heights[st.top()];
+        for(int i=0;i<heights.size()||!st.empty();i++)
+        {
+            while(!st.empty() && (i==heights.size() || heights[st.top()]>heights[i]))
+            {
+                int element=st.top();
                 st.pop();
-                int width = st.empty() ? i : i - st.top() - 1;
-                maxArea = max(maxArea, height * width);
+                int nse=i;
+                int pse=st.empty()?-1:st.top();
+                maxi=max(maxi,heights[element]*(nse-pse-1));
             }
-            st.push(i);
+            if(i<heights.size())st.push(i);
         }
-        return maxArea;
+        return maxi;
+    }
+    vector<vector<int>> prefixsum(vector<vector<char>> &matrix)
+    {
+        vector<vector<int>> c(matrix.size(),vector<int>(matrix[0].size(),0));
+        for(int i=0;i<matrix[0].size();i++) 
+        {
+            if(matrix[0][i]=='0') c[0][i]=0;
+            else c[0][i]=1;
+        }
+        for(int i=1;i<matrix.size();i++)
+        {
+            for(int j=0;j<matrix[0].size();j++)
+            {
+                if(matrix[i][j]=='1') c[i][j]=c[i-1][j]+1;
+                else c[i][j]=0;
+            }
+        }
+        return c;
     }
     int maximalRectangle(vector<vector<char>>& matrix) {
-        int n=matrix.size();
-        int m=matrix[0].size();
         int maxi=0;
-        vector<int> heights(m,0);
-        for(int i=0;i<n;i++)
+        vector<vector<int>> c=prefixsum(matrix);
+        for(int i=0;i<c.size();i++)
         {
-            for(int j=0;j<m;j++)
-            {
-                if(matrix[i][j]=='1') heights[j]++;
-                else heights[j]=0;
-            }
-            maxi=max(maxi,largestRectangleArea(heights));
+            maxi=max(maxi,largestRectangleArea(c[i]));
         }
         return maxi;
     }
