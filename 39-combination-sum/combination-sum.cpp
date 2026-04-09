@@ -2,7 +2,7 @@ class Solution {
 public:void helper(int index,vector<int>&v,vector<vector<int>>&ans,vector<int>&candidates,int target)
 {
     if(target==0){ ans.push_back(v); return;}
-    if(index==candidates.size()) return;
+    if(index==candidates.size() || target<0) return;
     if(candidates[index]<=target){
         v.push_back(candidates[index]);
         helper(index,v,ans,candidates,target-candidates[index]);
@@ -11,6 +11,7 @@ public:void helper(int index,vector<int>&v,vector<vector<int>>&ans,vector<int>&c
     helper(index+1,v,ans,candidates,target);
 }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
         vector<vector<int>> ans;
         vector<int> v;
         helper(0,v,ans,candidates,target);
