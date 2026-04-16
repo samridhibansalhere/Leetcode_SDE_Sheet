@@ -14,6 +14,7 @@ public:
             if(nums[mid]<k) low=mid+1;
             else high=mid-1;
         }
-        return low+k;
+        if(high < 0) return k;
+        return arr[high] + k - nums[high];
     }
 };
