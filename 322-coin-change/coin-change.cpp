@@ -1,32 +1,39 @@
 class Solution {
 public:
-int helper(int index,int amount,vector<int>& coins,vector<vector<int>>& dp)
+int f(int index,int amount,vector<int>&coins,vector<vector<int>>&dp)
 {
-    if(amount==0) return 0;
-    if(index==0) return (amount%coins[0]==0)?amount/coins[0]:1e9;
+    if(index==0)
+    {
+        if(amount%coins[0]==0) return amount/coins[0];
+        else return 1e9;
+    }
     if(dp[index][amount]!=-1) return dp[index][amount];
-    int nottake=helper(index-1,amount,coins,dp);
-    int take=1e9;
-    if(amount>=coins[index]) take=1+helper(index,amount-coins[index],coins,dp);
-    return dp[index][amount]=min(take,nottake);
+    int nontake=f(index-1,amount,coins,dp);
+    int take=INT_MAX;
+    if(amount>=coins[index]) take=1+f(index,amount-coins[index],coins,dp);
+    return dp[index][amount]=min(nontake,take); 
 }
     int coinChange(vector<int>& coins, int amount) {
-       int n=coins.size();
-       vector<int> prev(amount+1,1e9),curr(amount+1,1e9);
-       sort(coins.begin(),coins.end());
-       if(amount==0) return 0;
-       for(int i=0;i<=amount;i++)
-       if(i%coins[0]==0) prev[i]=curr[i]=i/coins[0];
-       for(int i=1;i<n;i++)
+      vector<int> dp(amount+1,0);
+       vector<int> curr(amount+1,0);
+      for(int w=0;w<=amount;w++)
+      {
+        if(w%coins[0]==0) dp[w]=w/coins[0];
+        else dp[w]=1e9;
+      }
+      for(int index=1;index<coins.size();index++)
+      {
+        for(int w=0;w<=amount;w++)
         {
-            for(int j=0;j<=amount;j++){
-                int nottake=prev[j];
-                int take=1e9;
-                if(j>=coins[i]) take=1+curr[j-coins[i]];
-                curr[j]=min(nottake,take);
-                }
-            prev=curr;
-       }
-       return (prev[amount]<1e9)? prev[amount]:-1;
+            int nontake=dp[w];
+            int take=INT_MAX;
+            if(w>=coins[index]) take=1+curr[w-coins[index]];
+            curr[w]=min(nontake,take); 
+        }
+        dp=curr;
+      }
+      int val=dp[amount];
+      if(val<1e9) return val;
+      else return -1;
     }
 };
