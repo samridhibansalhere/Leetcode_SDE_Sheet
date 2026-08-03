@@ -15,7 +15,7 @@ int f(int index,int amount,vector<int>&coins,vector<vector<int>>&dp)
 }
     int coinChange(vector<int>& coins, int amount) {
       vector<int> dp(amount+1,0);
-       vector<int> curr(amount+1,0);
+      
       for(int w=0;w<=amount;w++)
       {
         if(w%coins[0]==0) dp[w]=w/coins[0];
@@ -23,6 +23,7 @@ int f(int index,int amount,vector<int>&coins,vector<vector<int>>&dp)
       }
       for(int index=1;index<coins.size();index++)
       {
+        vector<int> curr(amount+1,0);
         for(int w=0;w<=amount;w++)
         {
             int nontake=dp[w];
