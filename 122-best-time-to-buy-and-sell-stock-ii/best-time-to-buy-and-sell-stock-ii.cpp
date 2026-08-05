@@ -1,28 +1,24 @@
 class Solution {
 public:
- long long helper(int index,int buy,int n,vector<int>& prices,vector<vector<int>> &dp){
-    if(index==n) return 0;
-    long long profit=0;
-    if(dp[index][buy]!=-1) return dp[index][buy];
-    if(buy) profit=max(-prices[index]+helper(index+1,0,n,prices,dp),helper(index+1,1,n,prices,dp));
-    else profit=max(prices[index]+helper(index+1,1,n,prices,dp),helper(index+1,0,n,prices,dp));
-    return dp[index][buy]=profit;
+int f(int i,int flag,int n,vector<int>& prices,vector<vector<int>>& dp){
+if(i==n) return 0;
+if(dp[i][flag]!=-1) return dp[i][flag];
+if(flag) return dp[i][flag]=max(-prices[i]+f(i+1,0,n,prices,dp),f(i+1,1,n,prices,dp));
+else return dp[i][flag]=max(prices[i]+f(i+1,1,n,prices,dp),f(i+1,0,n,prices,dp));
 }
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<int> prev(2,0);
+        vector<int> dp(2,0);
         vector<int> curr(2,0);
-        for(int index=n-1;index>=0;index--)
+        for(int i=n-1;i>=0;i--)
         {
-            for(int buy=0;buy<2;buy++)
+            for(int flag=0;flag<=1;flag++)
             {
-                long long profit=0;
-                if(buy) profit=max(-prices[index]+curr[0],curr[1]);
-                else profit=max(prices[index]+curr[1],curr[0]);
-                curr[buy]=profit;
+                if(flag) curr[flag]=max(-prices[i]+dp[0],dp[1]);
+                else curr[flag]=max(prices[i]+dp[1],dp[0]);
             }
-            prev=curr;
+            dp=curr;
         }
-        return prev[1];
+        return dp[1];
     }
 };
