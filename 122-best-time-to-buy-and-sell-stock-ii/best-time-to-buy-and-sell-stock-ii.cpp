@@ -8,17 +8,14 @@ else return dp[i][flag]=max(prices[i]+f(i+1,1,n,prices,dp),f(i+1,0,n,prices,dp))
 }
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<int> dp(2,0);
-        vector<int> curr(2,0);
+        int dp0=0,dp1=0,curr0=0,curr1=0;
         for(int i=n-1;i>=0;i--)
         {
-            for(int flag=0;flag<=1;flag++)
-            {
-                if(flag) curr[flag]=max(-prices[i]+dp[0],dp[1]);
-                else curr[flag]=max(prices[i]+dp[1],dp[0]);
-            }
-            dp=curr;
+            curr0=max(prices[i]+dp1,dp0);
+            curr1=max(-prices[i]+dp0,dp1);
+            dp0=curr0;
+            dp1=curr1;
         }
-        return dp[1];
+        return dp1;
     }
 };
