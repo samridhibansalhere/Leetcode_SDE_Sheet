@@ -1,16 +1,17 @@
 class Solution {
 public:
     int maxProfit(vector<int>& prices, int fee) {
+        int k=0;
         int n=prices.size();
-        vector<int> curr(2,0);
-        vector<int> ahead(2,0);
-        long long profit=0;
-        for(int index=n-1;index>=0;index--)
+       vector<vector<long long>> dp(n+k+1,vector<long long>(2,0));
+        for(int i=n-1;i>=0;i--)
         {
-            curr[1]=max(-prices[index]+ahead[0],ahead[1]);
-            curr[0]=max(prices[index]-fee+ahead[1],ahead[0]);
-            ahead=curr;
+            for(int flag=0;flag<=1;flag++)
+            {
+                if(flag) dp[i][flag]=max(-prices[i]+dp[i+1][0],dp[i+1][1]);
+                else dp[i][flag]=max(prices[i]-fee+dp[i+1+k][1],dp[i+1][0]);
+            }
         }
-        return ahead[1];    
+        return dp[0][1]; 
     }
 };
