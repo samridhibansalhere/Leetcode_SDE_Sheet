@@ -2,7 +2,6 @@
 class Solution {
 public:
 bool compare(string &a,string &b){
-    if(a.size()-b.size()!=1) return false;
     int i=0,j=0;
     while(i<a.size()){
         if(a[i]==b[j] && j<b.size()){i++; j++;}
@@ -12,38 +11,31 @@ bool compare(string &a,string &b){
 }
     int longestStrChain(vector<string>& nums) {
         int n=nums.size();
-        sort(nums.begin(), nums.end(),
+        vector<int> dp(n,1);
+         sort(nums.begin(), nums.end(),
          [](string &a, string &b) {
          return a.size() < b.size();
          });
-        vector<int> dp(n,1);
-        vector<int> parent(n,0);
-        int index=0;
-        int ans=1;
-        for(int i=1;i<n;i++)
+        vector<int> hash(n,0);
+        int maxi=1;
+        int c=0;
+        for(int i=0;i<n;i++)
         {
-            parent[i]=i;
-            for(int j=0;j<i;j++)
+            hash[i]=i;
+            for(int p=0;p<i;p++)
             {
-                if(compare(nums[i],nums[j]) && dp[j]+1>dp[i]){
-                    dp[i]=dp[j]+1;
-                    parent[i]=j;   
-                }
+                if(nums[i].size()==nums[p].size()+1 && compare(nums[i],nums[p]) && 1+dp[p]>dp[i]){ dp[i]=1+dp[p]; hash[i]=p; }
             }
-            if(dp[i]>ans)
-            {
-                ans=dp[i];
-                index=i;
-            }
+            if(dp[i]>maxi) {maxi=dp[i]; c=i;}
         }
-        vector<string> lis;
-        while(index!=parent[index])
+        vector<string> s;
+        while(hash[c]!=c)
         {
-            lis.push_back(nums[index]);
-            index=parent[index];
+            s.push_back(nums[c]);
+            c=hash[c];
         }
-        lis.push_back(nums[index]);
-        reverse(lis.begin(),lis.end());
-        return ans;
+        reverse(s.begin(), s.end());
+        
+        return maxi;
     }
 };
