@@ -4,7 +4,7 @@ public:
 bool compare(string &a,string &b){
     int i=0,j=0;
     while(i<a.size()){
-        if(a[i]==b[j] && j<b.size()){i++; j++;}
+        if(j<b.size() &&a[i]==b[j] ){i++; j++;}
         else i++;
     }
     return j==b.size();
@@ -34,6 +34,7 @@ bool compare(string &a,string &b){
             s.push_back(nums[c]);
             c=hash[c];
         }
+        s.push_back(nums[c]);
         reverse(s.begin(), s.end());
         
         return maxi;
