@@ -1,29 +1,23 @@
 class Solution {
 public:
-int helper(int index,int k,int n,vector<int>& arr,vector<int>&dp){
-    if(index==n) return 0;
-    if(dp[index]!=-1) return dp[index];
-    int len=0,maxi=INT_MIN,sum=INT_MIN;
-    for(int j=index;j<min(index+k,n);j++){
+int f(int i,int k,vector<int>&arr,vector<int>&dp){
+    if(i==arr.size())return 0;
+    int len=0;
+    int maxi=INT_MIN;
+    int maxans=INT_MIN;
+    if(dp[i]!=-1) return dp[i];
+    for(int j=i;j<min((int)arr.size(),i+k);j++)
+    {
         len++;
-        maxi=max(maxi,arr[j]);
-        sum=max(sum,len*maxi+helper(j+1,k,n,arr,dp));
+        maxi=max(arr[j],maxi);
+        int sum=len*maxi+f(j+1,k,arr,dp);
+        maxans=max(maxans,sum);
     }
-    return dp[index]=sum;
+    return dp[i]=maxans;
 }
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
         int n=arr.size();
-        vector<int> dp(n+1,0);
-        for(int index=n-1;index>=0;index--)
-        {
-            int len=0,maxi=INT_MIN,sum=INT_MIN;
-            for(int j=index;j<min(index+k,n);j++){
-                len++;
-                maxi=max(maxi,arr[j]);
-                sum=max(sum,len*maxi+dp[j+1]);
-            }
-            dp[index]=sum;
-        }
-        return dp[0];
+        vector<int> dp(n,-1);
+        return f(0,k,arr,dp);
     }
 };
